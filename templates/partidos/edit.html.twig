@@ -1,0 +1,13 @@
+{% extends 'extends/iboxContent.html.twig' %}
+
+{% block title %}Edit Partidos{% endblock %}
+
+{% block body %}
+    <h1>Edit Partidos</h1>
+
+    {{ include('partidos/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_partidos_index') }}">back to list</a>
+
+    {{ include('partidos/_delete_form.html.twig') }}
+{% endblock %}

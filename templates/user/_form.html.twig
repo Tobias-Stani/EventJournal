@@ -1,0 +1,66 @@
+{{ form_start(form) }}
+
+<div class="form-group row">
+    <div class="col-lg-4">
+        {{ form_row(form.email) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-lg-4">
+        {{ form_row(form.password) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-lg-4">
+        {{ form_row(form.role) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-lg-4">
+        {{ form_row(form.active) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <div style="display: flex; justify-content: space-between;" class="col-lg-4">
+        {{ form_row(form.guardar) }}
+        <a class="btn btn-default font-bold" href="{{ path('app_user_index') }}">Volver</a>
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+
+    $(document).ready(function() {
+
+        var statusId = '#{{ form.active.vars.id }}';
+
+        $(`${statusId} option`).css('font-weight', 'bold');
+        $(`${statusId} option`).eq(0).css('color', '#1ab394');
+        $(`${statusId} option`).eq(1).css('color', '#ed5565');
+
+        if ($(statusId).val() == 1) {
+            $(statusId).css('color', '#1ab394');
+        }
+        else {
+            $(statusId).css('color', '#ed5565');
+        }
+   
+        $(document).on('change', statusId, function() {
+        
+            if ($(this).val() == 1) {
+                $(this).css('color', '#1ab394');
+            }
+            else {
+                $(statusId).css('color', '#ed5565');
+            }
+        
+        });
+    
+    });
+
+</script>

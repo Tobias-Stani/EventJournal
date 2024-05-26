@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partidos{% endblock %}
+
+{% block body %}
+    <h1>Partidos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ partido.id }}</td>
+            </tr>
+            <tr>
+                <th>Local</th>
+                <td>{{ partido.local }}</td>
+            </tr>
+            <tr>
+                <th>Visitante</th>
+                <td>{{ partido.visitante }}</td>
+            </tr>
+            <tr>
+                <th>GolLocal</th>
+                <td>{{ partido.golLocal }}</td>
+            </tr>
+            <tr>
+                <th>GolVisitante</th>
+                <td>{{ partido.golVisitante }}</td>
+            </tr>
+            <tr>
+                <th>Estadio</th>
+                <td>{{ partido.estadio }}</td>
+            </tr>
+            <tr>
+                <th>Competencia</th>
+                <td>{{ partido.competencia }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ partido.fecha ? partido.fecha|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ partido.link }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_partidos_index') }}">back to list</a>
+
+    <a href="{{ path('app_partidos_edit', {'id': partido.id}) }}">edit</a>
+
+    {{ include('partidos/_delete_form.html.twig') }}
+{% endblock %}

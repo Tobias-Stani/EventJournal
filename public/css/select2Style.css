@@ -1,0 +1,24 @@
+.select2-container .select2-selection--single {
+    background-color: #FFFFFF;
+    background-image: none;
+    height: 34px;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    display: block;
+    padding: 3px 6px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;   
+}
+
+.select2-dropdown {
+    background-color: white;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    left: -100000px;
+    width: 100%;
+    z-index: 1051;
+}

@@ -1,0 +1,70 @@
+{% extends 'extends/iboxContent.html.twig' %}
+
+{% block tituloPagina %} 
+
+    <b>ESTADO LOGIN:</b> {{ configuration.siteStatus == 1 ? "<span style='color: #1ab394; font-weight: bold'>ACTIVADO</span>" : "<span style='color: #ed5565; font-weight: bold'>DESACTIVADO</span>" }}
+
+{% endblock %}
+
+{% block colIbox %} <div class="col-md-4"> {% endblock %}
+
+{% block contenidoIbox %}
+
+{% block tituloIbox %} <h3 class="font-bold textBlack"> Control de login en el sistema: </h3> <hr> {% endblock %}
+
+<div class="row form-group">
+        {{ form_start(form) }}
+        <div class="col-lg-12">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <label class="col-form-label">¿Login permitido?</label>
+                    {{ form_widget(form.siteStatus) }}
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    {{ form_widget(form.guardar) }}
+                </div>
+            </div>
+        </div>
+        
+        {{ form_end(form) }}
+        
+    </div>
+
+    <script>
+
+        $(document).ready(function() {
+    
+            var statusId = '#{{ form.siteStatus.vars.id }}';
+    
+            $(`${statusId} option`).css('font-weight', 'bold');
+            $(`${statusId} option`).eq(0).css('color', '#1ab394');
+            $(`${statusId} option`).eq(1).css('color', '#ed5565');
+    
+            if ($(statusId).val() == 1) {
+                $(statusId).css('color', '#1ab394');
+            }
+            else {
+                $(statusId).css('color', '#ed5565');
+            }
+       
+            $(document).on('change', statusId, function() {
+            
+                if ($(this).val() == 1) {
+                    $(this).css('color', '#1ab394');
+                }
+                else {
+                    $(statusId).css('color', '#ed5565');
+                }
+            
+            });
+        
+        });
+    
+    </script>
+    
+{% endblock %}
+

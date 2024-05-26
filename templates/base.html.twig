@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>
+			{% block title %}
+				Partidos
+			{% endblock %}
+		</title>
+
+		<link rel="icon" type="image/x-icon" href="{{ asset('images/river.png') }}">
+
+		{% block stylesheets %}
+			<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+			<link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+			<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+			<link href="{{ asset('css/myStyle.css') }}" rel="stylesheet">
+			<link href="{{ asset('css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+		{% endblock %}
+	</head>
+
+	<body>
+
+		{% block javascripts %}
+			<script src="{{ asset('js/funciones.js') }}"></script>
+			<script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+			<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+			<script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+			<script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+			<script src="https://kit.fontawesome.com/88e5a56d95.js" crossorigin="anonymous"></script>
+			<script src="{{ asset('js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+		{% endblock %}
+
+		{% block body %}
+			<div id="wrapper">
+				{% block menu %}
+					<nav class="navbar-default navbar-static-side" role="navigation">
+						<div class="sidebar-collapse">
+							<ul class="nav metismenu" id="side-menu">
+								<li class="nav-header">
+									<div class="dropdown profile-element">
+										<div class="text-center">
+											<div class="profile-image-container text-center">
+											<img alt="image" class="rounded-circle profile-image" src="{{ asset('images/river.png') }}">
+											<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+												<span class="block m-t-xs font-bold">Historial Partidos</span>
+												<span class="block m-t-xs font-bold">{{ app.user.email ?? "" }} <b class="caret"></b></span>
+											</a>
+											<ul class="dropdown-menu animated fadeInRight m-t-xs">
+												<li><a class="dropdown-item" href="{{ path('app_logout') }}">Salir</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class="logo-element">T</div>
+								</li>
+
+								<style>
+									.profile-image-container {
+										display: flex;
+										justify-content: center;
+										align-items: center;
+										flex-direction: column;
+									}
+									.profile-image {
+										width: 6vh;
+										height: 6vh;
+									}
+								</style>
+
+								<li>
+									<a href="{{ path('app_home') }}">
+										<i class="fa fa-home"></i>
+										<span class="nav-label">
+											Inicio
+										</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="{{ path('app_partidos_index') }}">
+										<i class="fa fa-cogs"></i>
+										<span>Partidos</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="fa fa-cogs"></i>
+										<span>Menú 2</span>
+									</a>
+								</li>
+
+								{% if is_granted('ROLE_SISTEMAS') %}
+								<li><a href="#"> <i class="fa fa-terminal"></i> <span class="nav-label"> Sistema </span> <span class="fa arrow"></span></a>
+									<ul class="nav nav-second-level collapse">
+										<li><a href="{{ path('app_user_index') }}"> <i class="fa fa-group"></i> Usuarios </a></li>
+										<li><a href="{{ path('app_configuration') }}"> <i class="fa fa-wrench"></i> Mantenimiento </a></li>
+									</ul>
+								</li>
+								{% endif %}
+                            </ul>
+						</div>
+					</nav>
+				{% endblock %}
+
+				{% block pagina %}
+					<div id="page-wrapper" class="gray-bg">
+						<div class="row border-bottom">
+							<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+								<div class="navbar-header">
+									<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+										<i class="fa fa-bars"></i>
+									</a>
+								</div>
+								<ul class="nav navbar-top-links navbar-right">
+									<li>
+										<a href="/logout">
+											<i class="fa fa-sign-out"></i>
+											Salir
+										</a>
+									</li>
+								</ul>
+
+							</nav>
+						</div>
+						<div class="row wrapper border-bottom white-bg page-heading">
+							<div class="col-lg-10">
+								<h2>
+									{% block tituloPagina %}{% endblock %}
+								</h2>
+							</div>
+						</div>
+						<div class="wrapper wrapper-content animated fadeInRight">
+							{% block contenido %}{% endblock %}
+						</div>
+						{% block footer %}
+							<div class="footer">
+								<div>
+									<strong>Tobias Stanislavsky</strong>
+									| Dirección Gral. de Sistemas &copy;
+									{{ "now"|date("Y") }}
+								</div>
+							</div>
+						{% endblock %}
+					</div>
+				{% endblock %}
+			</div>
+
+			<script src="{{ asset('js/inspinia.js') }}"></script>
+			<script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
+		{% endblock %}
+	</body>
+</html>

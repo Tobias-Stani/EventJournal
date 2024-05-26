@@ -1,0 +1,81 @@
+{% extends 'extends/iboxContent.html.twig' %}
+
+{% block tituloPagina %} Usuarios {% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/datatables.min.js') }}"></script>
+{% endblock %}
+
+{% block contenidoIbox %}
+
+{# SweetAlert edit propio #}
+{% for message in app.flashes('selfEdit') %}
+<script>
+    swal({
+        title: "¡Ups!",
+        text: "No puedes editarte a ti mismo.",
+        type: "warning"
+    });
+</script>
+{% endfor %}
+
+{# SweetAlert usuario repetido #}
+{% for message in app.flashes('repeatedUser') %}
+<script>
+    swal({
+        title: "¡Ups!",
+        text: "Este usuario ya está registrado.",
+        type: "error"
+    });
+</script>
+{% endfor %}
+
+    <table class="table" id="tabla">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td> {{ user.email }} </td>
+                <td> {{ user.role.name }} </td>
+                <td> {{ user.active ? "<span style='color: #1ab394; font-weight: bold;'>Activo</span>" : "<span style='color: #ed5565; font-weight: bold;'>Inactivo</span>" }} </td>
+                <td>                   
+                    <a href="{{ path('app_user_edit', { 'id': user.id }) }}"><span class="badge badge-success ml-1"> Editar </span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">sin resultados para mostrar</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_user_new') }}">
+        <i class="fa fa-plus-circle" style="margin-right: 3px;"></i>
+        <span>Agregar usuario</span>
+    </a>
+
+    <script>
+
+        $(document).ready(function() {
+
+            $('#tabla').DataTable()
+
+        });
+
+    </script>
+
+{% endblock %}

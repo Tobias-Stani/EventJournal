@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Torneos Login{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .full-height {
+            height: 100vh; /* Altura total del viewport */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background-size: cover;
+            background-position: center;
+            opacity: 0.8;
+            width: 100%;
+            padding: 20px; /* Ajusta el espaciado según sea necesario */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+        <script type="text/javascript">
+            $('body').attr('class', 'gray-bg');
+        </script>
+
+        <div class="full-height">
+        <div class="middle-box text-center loginscreen animated fadeInDown login-container">
+
+            <div>
+                <div class="text-center">
+                    <p style="font-size: 75px; font-weight: bold; color: #D3D3D3">Login</p>
+                </div>
+
+                {% for flash_error in app.flashes('success') %}
+                    <div class="alert alert-success" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                {% for flash_error in app.flashes('error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                {% for flash_error in app.flashes('verify_email_error') %}
+                    <div class="alert alert-success" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+
+                        {% if  error.code == 0 %}
+                            <script>
+                                window.onload = function () {
+                                    document.getElementById("unregistered").style.display = "block";
+                                }
+                            </script>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <form class="m-t" role="form" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Email" class="form-control" autocomplete="email" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Contraseña" autocomplete="current-password" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    />
+
+                    <button type="submit" class="btn btn-primary block full-width m-b">
+                        <b>
+                            <span class="fa fa-sign-in"></span> &nbsp;Ingresar
+                        </b>
+                    </button>
+                </form>
+
+                <br>
+                <a style="display: none;" id="unregistered" href="{#{ path('app_recovery_email_validation') }#}"><small>Reenviar email de confirmación</small></a>
+
+                <p class="text-muted text-center"><small>¿No tienes una cuenta?</small></p>
+                <a style="margin-bottom: 10px;" class="btn btn-sm btn-white btn-block" href="{{ path('app_register') }}">Crear una cuenta</a>
+                <a href="{#{ path('app_recovery_password') }#}"><small>¿Recuperar password?</small></a>
+
+                <p class="m-t"><small><strong>Tobias Stanislavsky</strong> | Dirección Gral. de Sistemas &copy; {{ "now"|date("Y") }}</small></p>
+            </div>
+        </div>
+    </div>   
+     
+{% endblock %}
+
+

@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block contenido %}
+    <div class="row">
+        {% block error %} {% endblock %}
+
+        {% block colIbox1 %}
+        <div class="col-md-6">
+            {% endblock %}
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    {% block contenidoIbox1 %}
+                        <h3 class="font-bold"> {% block tituloIbox1 %} {% endblock %}</h3>
+                        <hr>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+
+        {% block colIbox2 %}
+        <div class="col-md-6">
+            {% endblock %}
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    {% block contenidoIbox2 %}
+                        <h3 class="font-bold"> {% block tituloIbox2 %} {% endblock %}</h3>
+                        <hr>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

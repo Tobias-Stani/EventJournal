@@ -1,0 +1,11 @@
+{% extends 'extends/iboxContent.html.twig' %}
+
+{% block tituloPagina %} Editar Usuario: {% endblock %}
+
+{% block contenidoIbox %}
+
+{% block tituloIbox %} <h3 class="font-bold"> Usuario: </h3> <hr> {% endblock %}
+
+    {{ include('user/_form.html.twig') }}
+
+{% endblock %}
