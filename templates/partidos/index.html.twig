@@ -109,7 +109,7 @@
                 <td>{{ partido.golVisitante }}</td>
                 <td>{{ partido.estadio }}</td>
                 <td>{{ partido.competencia }}</td>
-                <td>{{ partido.fecha ? partido.fecha|date('Y-m-d') : '' }}</td>
+                <td>{{ partido.fecha ? partido.fecha|date('d-m-Y') : '' }}</td>
                 <td>
                     <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
                 </td>
@@ -149,7 +149,7 @@
                     <p>
                         <strong>Estadio:</strong> {{ ultimoPartido.estadio }}<br>
                         <strong>Competencia:</strong> {{ ultimoPartido.competencia }}<br>
-                        <strong>Fecha:</strong> {{ ultimoPartido.fecha ? ultimoPartido.fecha|date('Y-m-d') : '' }}<br>
+                        <strong>Fecha:</strong> {{ ultimoPartido.fecha ? ultimoPartido.fecha|date('d-m-Y') : '' }}<br>
                         <a href="{{ ultimoPartido.link }}" class="btn btn-primary" target="_blank">Link</a>
                     </p>
                 {% else %}
