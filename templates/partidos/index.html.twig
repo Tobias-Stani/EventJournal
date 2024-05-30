@@ -114,7 +114,6 @@
                     <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
                 </td>
                 <td>
-                    <a href="{{ path('app_partidos_show', {'id': partido.id}) }}" class="btn btn-info">Show</a>
                     <a href="{{ path('app_partidos_edit', {'id': partido.id}) }}" class="btn btn-warning">Edit</a>
                 </td>
             </tr>
@@ -172,12 +171,39 @@
     </div>
 </div>
 
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Partidos de visitante</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for partido in partidosVisitante %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="font-weight-bold">{{ partido.local }}</span> vs {{ partido.visitante }}
+                        </div>
+                        <div class="text-muted">
+                            {{ partido.fecha|date('d-m-Y') }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small><strong>Estadio:</strong> {{ partido.estadio }}</small>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>   
+</div>
+
+
 <script>
     $(document).ready(function() {
         $('#tabla').DataTable({
             responsive: true,
             pagingType: "full_numbers",
-            order: [[7, "desc"]],
+            order: [[7, "desc"]],  // Ajusta el índice a la columna correcta de la fecha y usa "desc" para ordenar de más reciente a más antiguo
             pageLength: 5,  // Mostrar solo 5 resultados por página
             dom: 'Bfrtip',
             buttons: [
@@ -198,6 +224,19 @@
                     text: '<i class="fa fa-print"></i> Imprimir',
                     titleAttr: 'Imprimir',
                     className: 'btn btn-primary'
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: 7,  // Apunta al índice de la columna de fecha
+                    render: function (data, type, row) {
+                        if (type === 'sort' || type === 'type') {
+                            // Convierte la fecha de d-m-y a y-m-d para ordenar
+                            var parts = data.split('-');
+                            return parts[2] + '-' + parts[1] + '-' + parts[0];
+                        }
+                        return data;
+                    }
                 }
             ]
         });

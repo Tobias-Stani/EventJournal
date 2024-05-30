@@ -1,5 +1,6 @@
 <?php
 
+// src/Controller/PartidosController.php
 namespace App\Controller;
 
 use App\Entity\Partidos;
@@ -9,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/partidos')]
 class PartidosController extends AbstractController
@@ -19,6 +20,7 @@ class PartidosController extends AbstractController
     {
         $partidos = $partidosRepository->findAll();
         $totalPartidos = count($partidos);
+        $partidosVisitante = $partidosRepository->findPartidosByVisitanteSQL('River');
 
         // Obtener el último partido
         $ultimoPartido = null;
@@ -30,6 +32,7 @@ class PartidosController extends AbstractController
             'partidos' => $partidos,
             'totalPartidos' => $totalPartidos,
             'ultimoPartido' => $ultimoPartido,
+            'partidosVisitante' => $partidosVisitante,
         ]);
     }
 
@@ -49,7 +52,7 @@ class PartidosController extends AbstractController
 
         return $this->render('partidos/new.html.twig', [
             'partido' => $partido,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -75,14 +78,14 @@ class PartidosController extends AbstractController
 
         return $this->render('partidos/edit.html.twig', [
             'partido' => $partido,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_partidos_delete', methods: ['POST'])]
     public function delete(Request $request, Partidos $partido, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$partido->getId(), $request->getPayload()->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$partido->getId(), $request->request->get('_token'))) {
             $entityManager->remove($partido);
             $entityManager->flush();
         }

@@ -1,14 +1,12 @@
 <?php
 
+// src/Repository/PartidosRepository.php
 namespace App\Repository;
 
 use App\Entity\Partidos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Partidos>
- */
 class PartidosRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +14,16 @@ class PartidosRepository extends ServiceEntityRepository
         parent::__construct($registry, Partidos::class);
     }
 
-    //    /**
-    //     * @return Partidos[] Returns an array of Partidos objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findPartidosByVisitanteSQL($equipoVisitante)
+    {
+        $entityManager = $this->getEntityManager();
 
-    //    public function findOneBySomeField($value): ?Partidos
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Partidos p
+            WHERE p.visitante = :visitante'
+        )->setParameter('visitante', $equipoVisitante);
+
+        return $query->getResult();
+    }
 }
