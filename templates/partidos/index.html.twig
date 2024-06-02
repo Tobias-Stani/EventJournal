@@ -200,19 +200,38 @@
 {% set meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
 
 <h3>Partidos por Mes y Año:</h3>
-{% set currentYear = null %}
-{% for partido in partidosPorMesYAnio %}
-    {% if currentYear != partido.year %}
-        {% if currentYear is not null %}
-            </ul>
-        {% endif %}
-        <h4>Año: {{ partido.year }}</h4>
-        <ul>
-        {% set currentYear = partido.year %}
-    {% endif %}
-    <li>{{ meses[partido.month - 1] }}, Total de Partidos: {{ partido.partidoCount }}</li>
-{% endfor %}
-</ul>
+
+<div id="accordion" class="accordion">
+    {% set currentYear = null %}
+    {% for partido in partidosPorMesYAnio %}
+        {% if currentYear != partido.year %}
+            {% if currentYear is not null %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    <div style="width: 100%;">
+                        <a class="btn btn-primary btn-block btn-sm btn-outline" data-toggle="collapse" href="#collapse{{ partido.year }}">
+                            Año: {{ partido.year }}
+                        </a>
+                    </div>           
+                </div>
+                <div id="collapse{{ partido.year }}" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                        {% set currentYear = partido.year %}
+                        {% endif %}
+                        <li class="list-group-item">
+                            <strong>{{ meses[partido.month - 1] }}</strong>, Total de Partidos: {{ partido.partidoCount }}
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <script>
     $(document).ready(function() {
