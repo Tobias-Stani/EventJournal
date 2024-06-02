@@ -28,11 +28,15 @@ class PartidosController extends AbstractController
             $ultimoPartido = $partidosRepository->findOneBy([], ['fecha' => 'DESC']);
         }
 
+        // Obtener partidos agrupados por mes y año
+        $partidosPorMesYAnio = $partidosRepository->findPartidosGroupedByMonthAndYear();
+
         return $this->render('partidos/index.html.twig', [
             'partidos' => $partidos,
             'totalPartidos' => $totalPartidos,
             'ultimoPartido' => $ultimoPartido,
             'partidosVisitante' => $partidosVisitante,
+            'partidosPorMesYAnio' => $partidosPorMesYAnio,
         ]);
     }
 

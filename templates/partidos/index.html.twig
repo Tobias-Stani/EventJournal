@@ -197,6 +197,22 @@
     </div>   
 </div>
 
+{% set meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
+
+<h3>Partidos por Mes y Año:</h3>
+{% set currentYear = null %}
+{% for partido in partidosPorMesYAnio %}
+    {% if currentYear != partido.year %}
+        {% if currentYear is not null %}
+            </ul>
+        {% endif %}
+        <h4>Año: {{ partido.year }}</h4>
+        <ul>
+        {% set currentYear = partido.year %}
+    {% endif %}
+    <li>{{ meses[partido.month - 1] }}, Total de Partidos: {{ partido.partidoCount }}</li>
+{% endfor %}
+</ul>
 
 <script>
     $(document).ready(function() {

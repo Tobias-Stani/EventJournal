@@ -26,4 +26,19 @@ class PartidosRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findPartidosGroupedByMonthAndYear(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT YEAR(p.fecha) as year, MONTH(p.fecha) as month, COUNT(p.id) as partidoCount
+            FROM partidos p
+            GROUP BY year, month
+            ORDER BY year ASC, month ASC
+        ';
+        $stmt = $conn->executeQuery($sql);
+
+        return $stmt->fetchAllAssociative();
+    }
 }
