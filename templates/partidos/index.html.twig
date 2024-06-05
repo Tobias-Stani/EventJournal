@@ -39,6 +39,41 @@
         .table {
             width: 100% !important;
         }
+
+        /* Sistema de estrellas */
+        .rating:not(:checked) > input {
+            position: absolute;
+            appearance: none;
+        }
+        
+        .rating:not(:checked) > label {
+            float: right;
+            cursor: pointer;
+            font-size: 15px;
+            color: #666;
+        }
+        
+        .rating:not(:checked) > label:before {
+            content: '★';
+        }
+        
+        .rating > input:checked + label:hover,
+        .rating > input:checked + label:hover ~ label,
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > label:hover ~ input:checked ~ label {
+            color: #e58e09;
+        }
+        
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: #ff9e0b;
+        }
+        
+        .rating > input:checked ~ label {
+            color: #ffa723;
+        }
+
     </style>
 {% endblock %}
 
@@ -83,48 +118,62 @@
 
 <h1>Partidos</h1>
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover" id="tabla">
-        <thead>
-            <tr>
-                <th>Local</th>
-                <th></th> <!-- Nueva columna para "vs" -->
-                <th>Visitante</th>
-                <th>GolLocal</th>
-                <th>GolVisitante</th>
-                <th>Estadio</th>
-                <th>Competencia</th>
-                <th>Fecha</th>
-                <th>Link</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for partido in partidos %}
-            <tr>
-                <td>{{ partido.local }}</td>
-                <td>vs</td> <!-- Columna "vs" -->
-                <td>{{ partido.visitante }}</td>
-                <td>{{ partido.golLocal }}</td>
-                <td>{{ partido.golVisitante }}</td>
-                <td>{{ partido.estadio }}</td>
-                <td>{{ partido.competencia }}</td>
-                <td>{{ partido.fecha ? partido.fecha|date('d-m-Y') : '' }}</td>
-                <td>
-                    <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
-                </td>
-                <td>
-                    <a href="{{ path('app_partidos_edit', {'id': partido.id}) }}" class="btn btn-warning">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover" id="tabla">
+            <thead>
+                <tr>
+                    <th>Local</th>
+                    <th></th>
+                    <th>Visitante</th>
+                    <th>GolLocal</th>
+                    <th>GolVisitante</th>
+                    <th>Estadio</th>
+                    <th>Competencia</th>
+                    <th>Fecha</th>
+                    <th>Link</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for partido in partidos %}
+                <tr>
+                    <td>{{ partido.local }}</td>
+                    <td>vs</td>
+                    <td>{{ partido.visitante }}</td>
+                    <td>{{ partido.golLocal }}</td>
+                    <td>{{ partido.golVisitante }}</td>
+                    <td>{{ partido.estadio }}</td>
+                    <td>{{ partido.competencia }}</td>
+                    <td>{{ partido.fecha ? partido.fecha|date('d-m-Y') : '' }}</td>
+                    <td>
+                        <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('app_partidos_index') }}">
+                            <input type="hidden" name="partido_id" value="{{ partido.id }}">
+                            <div class="rating">
+                                {% for i in 5..1 %}
+                                    <input value="{{ i }}" name="rating" id="star{{ i }}-{{ partido.id }}" type="radio" {% if partido.rating == i %}checked{% endif %}>
+                                    <label for="star{{ i }}-{{ partido.id }}" title="{{ i }} stars"></label>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_partidos_edit', {'id': partido.id}) }}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 
 <a class="btn btn-primary mt-3" href="{{ path('app_partidos_new') }}">
     <i class="fa fa-plus-circle" style="margin-right: 3px;"></i>

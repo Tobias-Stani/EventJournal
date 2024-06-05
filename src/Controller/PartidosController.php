@@ -15,22 +15,37 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/partidos')]
 class PartidosController extends AbstractController
 {
-    #[Route('/', name: 'app_partidos_index', methods: ['GET'])]
-    public function index(PartidosRepository $partidosRepository): Response
+    #[Route('/', name: 'app_partidos_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, PartidosRepository $partidosRepository, EntityManagerInterface $entityManager): Response
     {
+        // Obtener todos los partidos
         $partidos = $partidosRepository->findAll();
-        $totalPartidos = count($partidos);
         $partidosVisitante = $partidosRepository->findPartidosByVisitanteSQL('River');
-
+    
+        // Si se recibe un formulario POST, actualizar la puntuación del partido
+        if ($request->isMethod('POST')) {
+            $partidoId = $request->request->get('partido_id');
+            $rating = $request->request->get('rating');
+    
+            $partido = $partidosRepository->find($partidoId);
+            if ($partido) {
+                $partido->setRating($rating);
+                $entityManager->flush();
+            }
+        }
+    
+        // Obtener el número total de partidos
+        $totalPartidos = count($partidos);
+    
         // Obtener el último partido
         $ultimoPartido = null;
         if ($totalPartidos > 0) {
             $ultimoPartido = $partidosRepository->findOneBy([], ['fecha' => 'DESC']);
         }
-
+    
         // Obtener partidos agrupados por mes y año
         $partidosPorMesYAnio = $partidosRepository->findPartidosGroupedByMonthAndYear();
-
+    
         return $this->render('partidos/index.html.twig', [
             'partidos' => $partidos,
             'totalPartidos' => $totalPartidos,

@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity\Partidos;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -45,6 +46,19 @@ class PartidosType extends AbstractType
             ])
             ->add('link', TextType::class, [
                 'label' => 'Link',
+                'attr' => ['class' => 'form-control']
+            ])
+            ->add('rating', ChoiceType::class, [
+                'label' => 'Rating',
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5' => 5,
+                ],
+                'expanded' => true,
+                'multiple' => false,
                 'attr' => ['class' => 'form-control']
             ]);
     }
