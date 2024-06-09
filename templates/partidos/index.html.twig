@@ -90,7 +90,9 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
 {% endblock %}
+
 
 {% block contenidoIbox %}
 
@@ -129,7 +131,7 @@
                     <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
                 </td>
                 <td>
-                    <form method="post" action="{{ path('app_partidos_index') }}">
+                    <form id="ratingForm" method="post" action="{{ path('app_partidos_index') }}">
                         <input type="hidden" name="partido_id" value="{{ partido.id }}">
                         <div class="rating">
                             {% for i in 5..1 %}
@@ -137,7 +139,6 @@
                                 <label for="star{{ i }}-{{ partido.id }}" title="{{ i }} stars"></label>
                             {% endfor %}
                         </div>
-                        <button type="submit" class="btn btn-success">Save</button>
                     </form>
                 </td>
                 <td>
@@ -285,7 +286,6 @@
                 </div>
             </div>
         </div>
-
 <script>
     $(document).ready(function() {
         $('#tabla').DataTable({
@@ -327,6 +327,29 @@
                     }
                 }
             ]
+        });
+    });
+
+    //rating
+    $(document).ready(function() {
+        // Manejar el cambio de rating
+        $('input[name="rating"]').change(function() {
+            var formData = $('#ratingForm').serialize(); // Serializar el formulario
+
+            // Enviar la calificación al servidor usando AJAX
+            $.ajax({
+                type: 'POST',
+                url: $('#ratingForm').attr('action'),
+                data: formData,
+                success: function(response) {
+                    $('#responseMessage').html('<div class="alert alert-success">Rating guardado correctamente.</div>');
+                    // Puedes hacer más cosas aquí según tu requerimiento, como actualizar la UI
+                },
+                error: function(xhr, status, error) {
+                    $('#responseMessage').html('<div class="alert alert-danger">Hubo un error al guardar el rating.</div>');
+                    console.error(xhr.responseText);
+                }
+            });
         });
     });
 </script>
