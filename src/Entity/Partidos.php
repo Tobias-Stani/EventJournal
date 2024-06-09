@@ -1,5 +1,7 @@
 <?php
 
+// src/Entity/Partidos.php
+
 namespace App\Entity;
 
 use App\Repository\PartidosRepository;
@@ -40,6 +42,9 @@ class Partidos
 
     #[ORM\Column(type: "integer", nullable: true)]
     private ?int $rating = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observacion = null; // Nueva propiedad
 
     public function getId(): ?int
     {
@@ -150,6 +155,18 @@ class Partidos
     public function setRating(?int $rating): static
     {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getObservacion(): ?string
+    {
+        return $this->observacion;
+    }
+
+    public function setObservacion(?string $observacion): static
+    {
+        $this->observacion = $observacion;
 
         return $this;
     }
