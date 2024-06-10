@@ -41,39 +41,43 @@
         }
 
         /* Sistema de estrellas */
-        .rating:not(:checked) > input {
-            position: absolute;
-            appearance: none;
+        .rating {
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse; /* Invierte el orden de los elementos */
         }
-        
-        .rating:not(:checked) > label {
-            float: right;
+            
+        .rating > input {
+            display: none;
+        }
+            
+        .rating > label {
+            float: right; /* Mantenemos float: right */
             cursor: pointer;
             font-size: 15px;
             color: #666;
+            margin: 0;
         }
-        
-        .rating:not(:checked) > label:before {
+            
+        .rating > label:before {
             content: '★';
         }
-        
+            
         .rating > input:checked + label:hover,
-        .rating > input:checked + label:hover ~ label,
         .rating > input:checked ~ label:hover,
-        .rating > input:checked ~ label:hover ~ label,
-        .rating > label:hover ~ input:checked ~ label {
+        .rating > label:hover ~ input:checked ~ label,
+        .rating > input:checked ~ label:hover ~ label {
             color: #e58e09;
         }
-        
-        .rating:not(:checked) > label:hover,
-        .rating:not(:checked) > label:hover ~ label {
+            
+        .rating > input:not(:checked) ~ label:hover,
+        .rating > input:not(:checked) ~ label:hover ~ label {
             color: #ff9e0b;
         }
-        
+            
         .rating > input:checked ~ label {
             color: #ffa723;
         }
-
     </style>
 {% endblock %}
 
@@ -98,7 +102,7 @@
 
 <h1>Partidos</h1>
 
-<div class="table-responsive">
+    <div class="table-responsive">
     <table class="table table-striped table-hover" id="tabla">
         <thead>
             <tr>
@@ -131,7 +135,7 @@
                     <a href="{{ partido.link }}" class="btn btn-primary" target="_blank">Link</a>
                 </td>
                 <td>
-                    <form id="ratingForm" method="post" action="{{ path('app_partidos_index') }}">
+                    <form id="ratingForm{{ partido.id }}" class="rating-form" method="post" action="{{ path('app_partidos_index') }}">
                         <input type="hidden" name="partido_id" value="{{ partido.id }}">
                         <div class="rating">
                             {% for i in 5..1 %}
@@ -150,7 +154,7 @@
                     <a href="{{ path('app_partidos_edit', {'id': partido.id}) }}" class="btn btn-warning">Edit</a>
                 </td>
             </tr>
-            
+
             <!-- Modal -->
             <div class="modal fade" id="observacionModal{{ partido.id }}" tabindex="-1" role="dialog" aria-labelledby="observacionModalLabel{{ partido.id }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
