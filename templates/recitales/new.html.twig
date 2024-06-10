@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Recitales{% endblock %}
+
+{% block body %}
+    <h1>Create new Recitales</h1>
+
+    {{ include('recitales/_form.html.twig') }}
+
+    <a href="{{ path('app_recitales_index') }}">back to list</a>
+{% endblock %}
