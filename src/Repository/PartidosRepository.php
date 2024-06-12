@@ -41,4 +41,18 @@ class PartidosRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+
+    public function findDistinctYearsList()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT YEAR(p.fecha) as year
+            FROM partidos p
+            ORDER BY year DESC
+        ';
+        $stmt = $conn->executeQuery($sql);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

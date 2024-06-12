@@ -46,12 +46,16 @@ class PartidosController extends AbstractController
         // Obtener partidos agrupados por mes y año
         $partidosPorMesYAnio = $partidosRepository->findPartidosGroupedByMonthAndYear();
     
+        // Obtener años disponibles
+        $years = $partidosRepository->findDistinctYearsList();
+    
         return $this->render('partidos/index.html.twig', [
             'partidos' => $partidos,
             'totalPartidos' => $totalPartidos,
             'ultimoPartido' => $ultimoPartido,
             'partidosVisitante' => $partidosVisitante,
             'partidosPorMesYAnio' => $partidosPorMesYAnio,
+            'years' => $years,
         ]);
     }
 

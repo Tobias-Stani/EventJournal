@@ -8,6 +8,8 @@
     <link href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    {# grafo #}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <style>
         /* Personalización de los botones */
         .dt-buttons .btn {
@@ -95,6 +97,9 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+    {# grafos #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('build/app.js') }}"></script>
 {% endblock %}
 
 
@@ -290,6 +295,49 @@
                 </div>
             </div>
         </div>
+
+        {# Aquí empieza el código para el gráfico Chart.js #}
+        <canvas id="partidosChart" width="800" height="400"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const meses = {{ meses|json_encode|raw }};
+            const partidosPorMesYAnio = {{ partidosPorMesYAnio|json_encode|raw }};
+
+            let ctx = document.getElementById('partidosChart').getContext('2d');
+            let partidosData = [];
+            let labels = [];
+
+            partidosPorMesYAnio.forEach(function (item) {
+                labels.push(meses[item.month - 1] + ', ' + item.year);
+                partidosData.push(item.partidoCount);
+            });
+
+            let partidosChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total de Partidos',
+                        data: partidosData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
 <script>
     $(document).ready(function() {
         $('#tabla').DataTable({
