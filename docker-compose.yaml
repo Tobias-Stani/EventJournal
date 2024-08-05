@@ -13,6 +13,7 @@ services:
       - "${APACHE_PORT:-8060}:80" # Set a default port if not provided
     depends_on:
       - db
+    restart: always
 
   db:
     container_name: Historial-db
@@ -21,6 +22,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root} # Set a default value if not provided
     volumes:
       - ./mysql:/var/lib/mysql # Use named volumes for data persistence
+    restart: always
 
   phpmyadmin:
     container_name: Historial-phpmyadmin
@@ -31,6 +33,7 @@ services:
       - "${PMA_PORT:-8061}:80" # Set a default port if not provided
     depends_on:
       - db
+    restart: always
 
 volumes:
   mysql: # Define a named volume for MySQL data persistence
