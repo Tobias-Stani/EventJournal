@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   php-apache:
-    container_name: Historial-apache
+    container_name: to-do-apache
     image: php:8.2-apache
     build: ./
     volumes:
@@ -10,13 +10,13 @@ services:
       - ./php.ini:/usr/local/etc/php/php.ini
       - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
-      - "${APACHE_PORT:-8060}:80" # Set a default port if not provided
+      - "${APACHE_PORT:-8070}:80" # Set a default port if not provided
     depends_on:
       - db
     restart: always
 
   db:
-    container_name: Historial-db
+    container_name: to-do-db
     image: mysql:8.1
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root} # Set a default value if not provided
@@ -25,12 +25,12 @@ services:
     restart: always
 
   phpmyadmin:
-    container_name: Historial-phpmyadmin
+    container_name: to-do-phpmyadmin
     image: phpmyadmin:5.2
     environment:
       PMA_HOST: db
     ports:
-      - "${PMA_PORT:-8061}:80" # Set a default port if not provided
+      - "${PMA_PORT:-8071}:80" # Set a default port if not provided
     depends_on:
       - db
     restart: always
